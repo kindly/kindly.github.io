@@ -1,0 +1,209 @@
+<!doctype html>  
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Sample Graphs</title>
+	<meta name="author" content="@krzysu, myviews.pl">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <!--[if lte IE 8]><script src="../js/excanvas.min.js"></script><![endif]-->
+	<script src="jquery.flot.js"></script>
+	<script src="jquery.flot.tooltip.min.js"></script>
+	<script src="jquery.flot.pie.js"></script>
+	
+	<link type="text/css" rel="stylesheet" href="bootstrap.min.css"/>
+
+	<style type="text/css">
+      body{margin: 20px}
+	</style>
+</head>
+
+<body>
+    <h2>% Leyyah School Statisics</h1>
+
+    <div class="row">
+        <div class="span10">
+            <ul class="breadcrumb">
+            <li><a href="#">Pakistan</a> <span class="divider">/</span></li>
+            <li><a href="#">Punjab</a> <span class="divider">/</span></li>
+            <li class="active">Leyyah</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <iframe width="400" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.uk/maps?client=ubuntu&amp;channel=fs&amp;oe=utf-8&amp;gl=uk&amp;ie=UTF8&amp;hq=&amp;hnear=Layyah+District,+Punjab,+Pakistan&amp;t=m&amp;ll=31.010571,71.320496&amp;spn=0.823902,1.167297&amp;z=9&amp;output=embed"></iframe>
+        </div>
+        <div class="span4 offset2">
+            <table class="table table-bordered">
+                <tr> <td><b>Number of Schools</b></td><td>10</td>  </tr>
+                <tr> <td><b>Number of Teachers</b></td><td>200</td> </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <h4>% Schools with Electricity </h4>
+            <div id="bar" style="width: 350px; height: 200px;"></div>
+        </div>
+        <div class="span4 offset1">
+            <h4>% Schools with Electricity </h4>
+            <div id="line" style="width: 350px; height: 200px;"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <h4>Gender of Schools</h4>
+            <div id="pie1" style="width: 350px; height: 200px;"></div>
+        </div>
+        <div class="span4 offset1">
+            <h4>Gender of Teachers</h4>
+            <div id="pie2" style="width: 350px; height: 200px;"></div>
+        </div>
+    </div>
+
+
+	<script>
+  function labelFormatter(label, series) {
+      debugger;
+      return "<div style='font-size:10pt; text-align:center; padding:2px; color:black;'>" + label + '  ' + series.percent + "%</div>";
+  } 
+
+	$(function () {
+		var options = {
+			colors: ["#111"],
+			tooltip: true,
+			tooltipOpts: {
+				content: "%x",
+			},
+			grid: {
+				hoverable: true //IMPORTANT! this is needed for tooltip to work
+			},
+			bars: { 
+				show: true,
+				lineWidth: 1,
+				barWidth: 0.8,
+				align: 'center',
+				horizontal: true 
+			},	
+			xaxis: { 
+        tickLength: 0,
+        min: 0,
+        max: 80,
+        tickFormatter: function(num, obj) {return num + '%'},
+			},	
+			yaxis: { 
+        ticks: [[3, "Layyah"], [2, "Punjab"], [1, "Pakistan"]],
+        tickLength: 0
+			},	
+		};
+    var plotObj = $.plot($("#bar"), [ {data: [[57, 3]]}, {data: [[68, 2]]}, {data: [[51, 1]] } ], options);
+	});
+
+	$(function () {
+		var options = {
+			tooltip: true,
+			tooltipOpts: {
+				content: "%y",
+			},
+			grid: {
+				hoverable: true //IMPORTANT! this is needed for tooltip to work
+			},
+			lines: { 
+				show: true,
+				lineWidth: 2,
+			},	
+			points: { 
+				show: true,
+				lineWidth: 2,
+			},	
+			xaxis: { 
+        tickLength: 0,
+        ticks: [[1, "2009"], [2, "2010"], [3, "2011"], [4, "2012"]],
+			},	
+			yaxis: { 
+        min: 40,
+        max: 80,
+        tickFormatter: function(num, obj) {return num + '%'},
+			},
+      shadowSize: 0
+		};
+    var plotObj = $.plot($("#line"), 
+            [ {label:"Layyah", data: [[1, 45], [2, 50], [3, 55], [4, 57]], color:'#888' } ], options);
+	});
+
+	$(function () {
+		var options = {
+      series: {
+        pie: { 
+          show: true,
+          radius: 1,
+          lineWidth: 2,
+          label: {
+             formatter: labelFormatter,
+             show: true,
+             radius: 3/4,
+             background: {
+                 opacity: 0
+             }
+          }
+        },
+      },
+      legend: {
+          show: false
+      },
+			tooltipOpts: {
+				content: "%y",
+			},
+			grid: {
+				hoverable: true //IMPORTANT! this is needed for tooltip to work
+			},
+		};
+    var plotObj = $.plot($("#pie1"), 
+            [{label:"Male Schools", data: 45},
+             {label:"Female Schools", data: 55}], options);
+	});
+
+	$(function () {
+		var options = {
+      series: {
+        pie: { 
+          show: true,
+          radius: 1,
+          lineWidth: 2,
+          label: {
+             formatter: labelFormatter,
+             show: true,
+             radius: 3/4,
+             background: {
+                 opacity: 0
+             }
+          }
+        },
+      },
+      legend: {
+          show: false
+      },
+			tooltipOpts: {
+				content: "%y",
+			},
+			grid: {
+				hoverable: true //IMPORTANT! this is needed for tooltip to work
+			},
+		};
+    var plotObj = $.plot($("#pie2"), 
+            [{label:"Male Teachers", data: 45},
+             {label:"Female Teachers", data: 55}], options);
+	});
+	</script>
+
+
+</body>
+</html>
